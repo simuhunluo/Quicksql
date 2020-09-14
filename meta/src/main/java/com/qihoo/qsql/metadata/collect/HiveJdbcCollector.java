@@ -2,14 +2,15 @@ package com.qihoo.qsql.metadata.collect;
 
 import com.qihoo.qsql.metadata.collect.dto.HiveProp;
 import com.qihoo.qsql.metadata.entity.DatabaseValue;
+
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.apache.commons.dbutils.DbUtils;
 
-public class HiveJdbcCollector extends BaseJdbcCollector{
-    // private String dbType;
+public class HiveJdbcCollector extends BaseJdbcCollector {
 
     public HiveJdbcCollector(HiveProp prop, String filter) throws
         SQLException, ClassNotFoundException {
@@ -17,7 +18,6 @@ public class HiveJdbcCollector extends BaseJdbcCollector{
         this.prop = prop;
         Class.forName(prop.getJdbcDriver());
         connection = DriverManager.getConnection(prop.getJdbcUrl(), prop.getJdbcUser(), prop.getJdbcPassword());
-        // this.dbType = dbType;
     }
 
     @Override
