@@ -10,9 +10,9 @@ import java.sql.SQLException;
 
 import org.apache.commons.dbutils.DbUtils;
 
-public class Hive2JdbcCollector extends BaseJdbcCollector {
+public class HiveJdbcCollector extends BaseJdbcCollector {
 
-    public Hive2JdbcCollector(HiveProp prop, String filter) throws
+    public HiveJdbcCollector(HiveProp prop, String filter) throws
         SQLException, ClassNotFoundException {
         super(filter);
         this.prop = prop;
