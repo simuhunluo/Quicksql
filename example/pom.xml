@@ -28,33 +28,6 @@
             <artifactId>qsql-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.codelibs.elasticsearch.module</groupId>
-            <artifactId>lang-painless</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch.client</groupId>
-            <artifactId>elasticsearch-rest-client</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.elasticsearch</groupId>
-            <artifactId>elasticsearch</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-            <version>${httpcore.version}</version>
-        </dependency>
-        <dependency>
-            <!-- Using special netty transport to start embedded ES instance during tests -->
-            <groupId>org.elasticsearch.plugin</groupId>
-            <artifactId>transport-netty4-client</artifactId>
-            <version>${elasticsearch.version}</version>
-        </dependency>
-
         <!-- spark -->
         <dependency>
             <groupId>org.apache.spark</groupId>
@@ -134,6 +107,11 @@
             </plugin>
 
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
     </build>
 
 </project>

@@ -99,11 +99,6 @@ limitations under the License.
             <artifactId>sketches-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>test</scope>
@@ -371,7 +366,7 @@ limitations under the License.
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <failOnWarning>true</failOnWarning>
+                            <failOnWarning>false</failOnWarning>
                             <!-- ignore "unused but declared" warnings -->
                             <ignoredUnusedDeclaredDependencies>
                                 <ignoredUnusedDeclaredDependency>

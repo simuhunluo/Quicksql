@@ -18,13 +18,16 @@
 
 ![image-20191230091732159](../images/develop/image-20191230091732159.png)
 
-ps:混合查询测试
+(5) maven profile激活
+> ps:混合查询测试
+>
+> 由于本地测试需要使用spark相关环境，需要激活`development`这一profile, 本质上是将hadoop, spark,
+flink等组件的maven依赖scope由默认的`provided`切换为`compile`.
+同样，如果需要在服务器已有spark,flink组件环境的情况下，可以打包时使用provided，QuickSQL将使用服务器环境的spark组件。
 
-由于本地测试需要使用spark相关环境，需要修改父pom下spark的scope 为compile形式
 
-(5) 第五步修改pom
+![profile-active.png](../images/profile-active.png)
 
-![image-20191231172639084](../images/develop/image-20191231172639084.png)
 
 （6）第六步运行混查example
 

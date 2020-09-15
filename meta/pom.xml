@@ -25,6 +25,7 @@
             <groupId>com.qihoo.qsql</groupId>
             <artifactId>qsql-calcite-parser</artifactId>
             <version>${project.parent.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.validation</groupId>
@@ -95,12 +96,7 @@
         <dependency>
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
-            <version>${hadoop.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
+            <scope>${dependency.scope}</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
@@ -112,10 +108,6 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -143,7 +135,7 @@
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <failOnWarning>true</failOnWarning>
+                            <failOnWarning>false</failOnWarning>
                             <!-- ignore "unused but declared" warnings -->
                             <ignoredUnusedDeclaredDependencies>
                                 <ignoredUnusedDeclaredDependency>

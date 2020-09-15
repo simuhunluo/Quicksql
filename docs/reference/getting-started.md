@@ -89,6 +89,12 @@ $ ./bin/metadata-extract.sh -p "<SCHEMA-JSON>" -d "<DATA-SOURCE>" -r "<TABLE-NAM
 $ ./memetadata-extract.sh -p "{\"jdbcDriver\": \"com.mysql.jdbc.Driver\", \"jdbcUrl\": \"jdbc:mysql://localhost:3306/db\", \"jdbcUser\": \"user\",\"jdbcPassword\": \"pass\"}" -d "mysql" -r "my_table"
 ``````
 
+从**Hive**存储中采集元数据
+
+``````shell
+$ ./memetadata-extract.sh -p "{\"jdbcDriver\": \"org.apache.hive.jdbc.HiveDriver\", \"jdbcUrl\": \"jdbc:hive2://localhost:10000/default\", \"jdbcUser\": \"user\",\"jdbcPassword\": \"pass\", \"dbName\":\"default\"}" -d "hive" -r "my_hive_table"
+``````
+
 从**Elasticsearch**存储中采集元数据
 
 ``````shell
@@ -152,18 +158,10 @@ $ ./memetadata-extract.sh -p "{\"jdbcDriver\": \"ru.yandex.clickhouse.ClickHouse
 	"esPass": "PASSWORD",
 	"esName": "esTest"
 }
-##Hive(Hive元数据存在MySQL中)
-{
-	"jdbcDriver": "com.mysql.jdbc.Driver",
-	"jdbcUrl": "jdbc:mysql://localhost:3306/db",
-	"jdbcUser": "USER",
-	"jdbcPassword": "PASSWORD",
-	"dbName": "hive_db"
-}
-##Hive-Jdbc(Hive元数据通过Jdbc访问 )
+##Hive(通过HiveServer2获取元数据)
 {
 	"jdbcDriver": "org.apache.hive.jdbc.HiveDriver",
-	"jdbcUrl": "jdbc:hive2://localhost:7070/learn_kylin",
+	"jdbcUrl": "jdbc:hive2://localhost:10000/default",
 	"jdbcUser": "USER",
 	"jdbcPassword": "PASSWORD",
 	"dbName": "default"
@@ -268,7 +266,7 @@ Quicksql支持使用Client/Server模式的JDBC连接进行查询，用户的应�
 **启动Server**
 
 ``````shell
-$ ./bin/quicksql-server.sh start -P 5888 -R spark -M yarn-client
+$ ./bin/quicksql-server.sh start -p 5888 -r spark -m yarn-client
 ``````
 
 启动参数包括start|stop|restart|status，-P/-R/-M为可选项，分别对应端口号，执行引擎和任务调度方式，

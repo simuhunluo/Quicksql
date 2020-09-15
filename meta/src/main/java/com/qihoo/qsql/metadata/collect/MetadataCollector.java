@@ -10,12 +10,14 @@ import com.qihoo.qsql.metadata.collect.dto.MongoPro;
 import com.qihoo.qsql.metadata.entity.DatabaseParamValue;
 import com.qihoo.qsql.metadata.entity.DatabaseValue;
 import com.qihoo.qsql.metadata.entity.TableValue;
-import com.qihoo.qsql.org.apache.calcite.tools.YmlUtils;
+import com.qihoo.qsql.org.apache.calcite.tools.JdbcSourceInfo;
+
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
 import org.apache.log4j.PropertyConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,20 +49,17 @@ public abstract class MetadataCollector {
         try {
             LOGGER.info("Connecting server.....");
             dataSource = dataSource.toLowerCase();
-            Map<String, Map<String, String>> sourceMap = YmlUtils.getSourceMap();
+            Map<String, Map<String, String>> sourceMap = JdbcSourceInfo.getSourceMap();
             if (sourceMap.containsKey(dataSource)) {
                 String collectorClassName = sourceMap.get(dataSource).get("collectorClass");
                 if ("hive".equals(collectorClassName)) {
-                    return new HIveJdbcCollector(mapper.readValue(json, HiveProp.class),regexp,dataSource);
-                }else {
-                    return new JdbcCollector(mapper.readValue(json, JdbcProp.class),regexp, sourceMap.get(dataSource),
+                    return new HiveCollector(mapper.readValue(json, HiveProp.class), regexp);
+                } else {
+                    return new JdbcCollector(mapper.readValue(json, JdbcProp.class), regexp, sourceMap.get(dataSource),
                         dataSource);
                 }
             }
             switch (dataSource.toLowerCase()) {
-                case "hive":
-                    return new HiveCollector(
-                        mapper.readValue(json, HiveProp.class), regexp);
                 case "es":
                 case "elasticsearch":
                     return new ElasticsearchCollector(

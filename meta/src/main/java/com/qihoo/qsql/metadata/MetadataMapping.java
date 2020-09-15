@@ -1,7 +1,8 @@
 package com.qihoo.qsql.metadata;
 
-import com.qihoo.qsql.org.apache.calcite.tools.YmlUtils;
+import com.qihoo.qsql.org.apache.calcite.tools.JdbcSourceInfo;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -36,13 +37,17 @@ public enum MetadataMapping {
         "com.qihoo.qsql.org.apache.calcite.adapter.hive.HiveTableFactory",
         Arrays.asList(
             "dbName", "tableName", "cluster")
+    ),
+
+    Csv("com.qihoo.qsql.org.apache.calcite.adapter.csv.CsvSchemaFactory",
+        "com.qihoo.qsql.org.apache.calcite.adapter.csv.CsvTableFactory",
+        Collections.emptyList()
     );
 
     public static final String HIVE = "hive";
     public static final String MONGO = "mongo";
     public static final String ELASTICSEARCH = "es";
 
-    private static final String JOINT_FLAG = "%";
     String schemaClass;
     String tableClass;
     List<String> calciteProperties;
@@ -55,10 +60,6 @@ public enum MetadataMapping {
     }
 
     static MetadataMapping convertToAdapter(String name) {
-        Map<String, Map<String,String>> sourceMap = YmlUtils.getSourceMap();
-        if (sourceMap.containsKey(name.toLowerCase())) {
-            return MetadataMapping.JDBC;
-        }
         switch (name.toLowerCase()) {
             case ELASTICSEARCH:
                 return MetadataMapping.Elasticsearch;
@@ -66,8 +67,20 @@ public enum MetadataMapping {
                 return MetadataMapping.Hive;
             case MONGO:
                 return MetadataMapping.MONGODB;
-            default:
-                throw new RuntimeException("Not support given adapter name!!");
         }
+        Map<String, Map<String,String>> sourceMap = JdbcSourceInfo.getSourceMap();
+        if (sourceMap.containsKey(name.toLowerCase())) {
+            return MetadataMapping.JDBC;
+        }
+        throw new RuntimeException("Not support given adapter name!!");
+    }
+
+    public static MetadataMapping matchFactoryClass(String className) {
+        for (MetadataMapping metaType : MetadataMapping.values()) {
+            if (metaType.schemaClass.equals(className)) {
+                return metaType;
+            }
+        }
+        throw new RuntimeException(String.format("not match metaType by :%s",className));
     }
 }
