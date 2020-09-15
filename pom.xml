@@ -999,6 +999,19 @@
 
     <profiles>
         <profile>
+            <!-- pick this profile when publishing -->
+            <id>release</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <properties>
+                <log.level>ERROR</log.level>
+                <profiles.active>release</profiles.active>
+                <dependency.scope>provided</dependency.scope>
+                <force.dependency.analyze>true</force.dependency.analyze>
+            </properties>
+        </profile>
+        <profile>
             <!-- This profile adds/overrides few features of the 'apache-release'
                  profile in the parent pom. -->
             <id>apache-release</id>
@@ -1113,19 +1126,6 @@
                 <profiles.active>local-development</profiles.active>
                 <dependency.scope>compile</dependency.scope>
                 <force.dependency.analyze>false</force.dependency.analyze>
-            </properties>
-        </profile>
-        <profile>
-            <!-- pick this profile when publishing -->
-            <id>release</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <log.level>ERROR</log.level>
-                <profiles.active>release</profiles.active>
-                <dependency-scope>provided</dependency-scope>
-                <force.dependency.analyze>true</force.dependency.analyze>
             </properties>
         </profile>
     </profiles>
