@@ -53,7 +53,7 @@ public abstract class MetadataCollector {
             if (sourceMap.containsKey(dataSource)) {
                 String collectorClassName = sourceMap.get(dataSource).get("collectorClass");
                 if ("hive".equals(collectorClassName)) {
-                    return new HiveJdbcCollector(mapper.readValue(json, HiveProp.class), regexp);
+                    return new Hive2JdbcCollector(mapper.readValue(json, HiveProp.class), regexp);
                 } else {
                     return new JdbcCollector(mapper.readValue(json, JdbcProp.class), regexp, sourceMap.get(dataSource),
                         dataSource);
