@@ -264,6 +264,7 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
+                <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>io.airlift.tpch</groupId>
@@ -339,7 +340,6 @@
                 <groupId>org.apache.hadoop</groupId>
                 <artifactId>hadoop-client</artifactId>
                 <version>${hadoop.version}</version>
-                <scope>${dependency.scope}</scope>
             </dependency>
             <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
@@ -513,7 +513,7 @@
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-core_${scala.version}</artifactId>
                 <version>${spark.version}</version>
-                <scope>${dependency.scope}</scope>
+
                 <exclusions>
                     <exclusion>
                         <artifactId>io.netty</artifactId>
@@ -525,19 +525,19 @@
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-sql_${scala.version}</artifactId>
                 <version>${spark.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-streaming_${scala.version}</artifactId>
                 <version>${spark.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-hive_${scala.version}</artifactId>
                 <version>${spark.version}</version>
-                <scope>${dependency.scope}</scope>
+
                 <exclusions>
                     <exclusion>
                         <artifactId>calcite-avatica</artifactId>
@@ -553,63 +553,79 @@
             <!-- flink -->
             <dependency>
                 <groupId>org.apache.flink</groupId>
+                <artifactId>flink-core</artifactId>
+                <version>${flink.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
                 <artifactId>flink-java</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-streaming-java_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-streaming-scala_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-table-api-java-bridge_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-table-planner_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-table-api-scala-bridge_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-table-common</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-clients_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-connector-elasticsearch5_2.11</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
             </dependency>
             <dependency>
                 <groupId>org.apache.flink</groupId>
                 <artifactId>flink-connector-hive_${scala.version}</artifactId>
                 <version>${flink.version}</version>
-                <scope>${dependency.scope}</scope>
+
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-shaded-hadoop2-uber</artifactId>
+                <version>${flink-shaded-hadoop2-uber.version}</version>
+
+            </dependency>
+            <dependency>
+                <groupId>org.apache.flink</groupId>
+                <artifactId>flink-hadoop-compatibility_${scala.version}</artifactId>
+                <version>${flink.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mongodb</groupId>
@@ -639,6 +655,13 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 
     <build>
         <resources>
@@ -717,7 +740,7 @@
                             <goal>analyze-only</goal>
                         </goals>
                         <configuration>
-                            <failOnWarning>${force.dependency.analyze}</failOnWarning>
+                            <failOnWarning>false</failOnWarning>
                         </configuration>
                     </execution>
                 </executions>
@@ -1000,19 +1023,6 @@
 
     <profiles>
         <profile>
-            <!-- pick this profile when publishing -->
-            <id>release</id>
-            <activation>
-                <jdk>1.8</jdk>
-            </activation>
-            <properties>
-                <log.level>ERROR</log.level>
-                <profiles.active>release</profiles.active>
-                <dependency.scope>provided</dependency.scope>
-                <force.dependency.analyze>false</force.dependency.analyze>
-            </properties>
-        </profile>
-        <profile>
             <!-- This profile adds/overrides few features of the 'apache-release'
                  profile in the parent pom. -->
             <id>apache-release</id>
@@ -1117,16 +1127,6 @@
             <properties>
                 <!-- Java 1.8 does not support -html5, so we pass another harmles option -->
                 <maven-javadoc-html5>-notimestamp</maven-javadoc-html5>
-            </properties>
-        </profile>
-        <profile>
-            <!-- pick this profile when developing -->
-            <id>local-development</id>
-            <properties>
-                <log.level>INFO</log.level>
-                <profiles.active>local-development</profiles.active>
-                <dependency.scope>compile</dependency.scope>
-                <force.dependency.analyze>false</force.dependency.analyze>
             </properties>
         </profile>
     </profiles>

@@ -23,6 +23,7 @@ public class CsvScanExample {
             .setAcceptedResultsNum(100)
             .ok();
         runner.sql(sql).show();
-        System.exit(0);
+        RuntimeEnv.close();
+//        System.exit(0);
     }
 }

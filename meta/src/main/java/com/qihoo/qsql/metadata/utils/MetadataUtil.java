@@ -16,7 +16,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class MetadataUtil {
 
-    private static final String META_STORE_PATH = "../metastore/schema.db";
+    private static final String META_STORE_PATH = "E:\\idea-project\\Quicksql\\metastore\\schema-demo.db";
     private static final String META_STORE_MODE = "intern";
     /**
      * .

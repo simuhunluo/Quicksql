@@ -95,6 +95,8 @@
                 <exclude>org.spark-project.hive:*:jar</exclude>
                 <exclude>org.antlr:*:jar</exclude>
                 <exclude>org.apache.spark:*:jar</exclude>
+                <exclude>org.apache.flink:*:jar</exclude>
+                <exclude>org.apache.hadoop:*:jar</exclude>
             </excludes>
             <outputDirectory>/${qsql.release}/lib</outputDirectory>
             <scope>runtime</scope>

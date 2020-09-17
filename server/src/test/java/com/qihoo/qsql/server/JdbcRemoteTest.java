@@ -135,7 +135,7 @@ public class JdbcRemoteTest {
         Class.forName("com.qihoo.qsql.client.Driver");
         String url = "jdbc:quicksql:url=http://localhost:5888";
         Properties properties = new Properties();
-        properties.put("runner","jdbc");
+        properties.put("runner","spark");
         return (AvaticaConnection) DriverManager.getConnection(url,properties);
     }
 

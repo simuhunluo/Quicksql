@@ -161,7 +161,7 @@ $ ./memetadata-extract.sh -p "{\"jdbcDriver\": \"ru.yandex.clickhouse.ClickHouse
 ##Hive(通过HiveServer2获取元数据)
 {
 	"jdbcDriver": "org.apache.hive.jdbc.HiveDriver",
-	"jdbcUrl": "jdbc:hive2://localhost:7070/learn_kylin",
+	"jdbcUrl": "jdbc:hive2://localhost:10000/default",
 	"jdbcUser": "USER",
 	"jdbcPassword": "PASSWORD",
 	"dbName": "default"
