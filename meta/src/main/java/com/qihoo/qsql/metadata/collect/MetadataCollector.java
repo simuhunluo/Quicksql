@@ -10,7 +10,7 @@ import com.qihoo.qsql.metadata.collect.dto.MongoPro;
 import com.qihoo.qsql.metadata.entity.DatabaseParamValue;
 import com.qihoo.qsql.metadata.entity.DatabaseValue;
 import com.qihoo.qsql.metadata.entity.TableValue;
-import com.qihoo.qsql.org.apache.calcite.tools.YmlUtils;
+import com.qihoo.qsql.org.apache.calcite.tools.JdbcSourceInfo;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -49,7 +49,7 @@ public abstract class MetadataCollector {
         try {
             LOGGER.info("Connecting server.....");
             dataSource = dataSource.toLowerCase();
-            Map<String, Map<String, String>> sourceMap = YmlUtils.getSourceMap();
+            Map<String, Map<String, String>> sourceMap = JdbcSourceInfo.getSourceMap();
             if (sourceMap.containsKey(dataSource)) {
                 String collectorClassName = sourceMap.get(dataSource).get("collectorClass");
                 if ("hive".equals(collectorClassName)) {
@@ -108,14 +108,11 @@ public abstract class MetadataCollector {
                 dbId = origin.getDbId();
                 LOGGER.info("Reuse database {}!!", dbValue);
             }
-            /// Query tableNames from schema
             List<String> tableNames = getTableNameList();
             tableNames.forEach(tableName -> {
                 Long tbId;
-                /// Tables already exist in schema, queried by matching tableName.
                 List<TableValue> originTable = client.getTableSchema(tableName);
                 if (originTable.stream().noneMatch(val -> val.getDbId().equals(dbId))) {
-                    // any table is not related to ${dbId}
                     TableValue tableValue = convertTableValue(dbId, tableName);
                     tbId = client.insertTableSchema(tableValue);
                     LOGGER.info("Insert table {} successfully!!", tableValue.getTblName());
@@ -125,7 +122,6 @@ public abstract class MetadataCollector {
                     }
                     client.insertFieldsSchema(cols);
                 } else {
-                    // some tables related to ${dbId}
                     TableValue shoot = originTable.stream()
                         .filter(val -> val.getDbId().equals(dbId)).findFirst()
                         .orElseThrow(() -> new RuntimeException("Query table error."));
