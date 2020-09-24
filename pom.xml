@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
@@ -1122,11 +1122,31 @@
         <profile>
             <id>java8</id>
             <activation>
-                <jdk>1.8</jdk>
+                <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
                 <!-- Java 1.8 does not support -html5, so we pass another harmles option -->
                 <maven-javadoc-html5>-notimestamp</maven-javadoc-html5>
+            </properties>
+        </profile>
+        <profile>
+            <id>release</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <log.level>ERROR</log.level>
+                <!-- All of hadoop, spark, flink jars won't get into the package -->
+                <dependency.scope>provided</dependency.scope>
+            </properties>
+        </profile>
+        <profile>
+            <!-- pick this profile when developing -->
+            <id>development</id>
+            <properties>
+                <log.level>INFO</log.level>
+                <!-- Compare with 'release' profile. These packages are needed during development. -->
+                <dependency.scope>compile</dependency.scope>
             </properties>
         </profile>
     </profiles>
